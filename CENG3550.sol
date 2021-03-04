@@ -1,9 +1,11 @@
+// SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.0;
 
 //ERC20 interface from https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol
 import "./IERC20.sol";
 
 contract B99 is IERC20 {
+    //B99 is only use numbers that are a multiple of 9.
     
     uint private total;     // Total wealth of B99.
     string public name; 
@@ -16,12 +18,12 @@ contract B99 is IERC20 {
         name = "B99";
         symbol = "NINE";
         total = 999999999;
-        balances[msg.sender] = total; // I'm the creator and owner of everything. -for now
+        balances[msg.sender] = total; // I'm the creator and owner everything. -for now
         
     }
 
     function totalSupply () public view override returns (uint256) {
-        return total; //return all wealth. This value constant, because I can't implement any burn etc function that can change total.
+        return total; //This value constant, because I can't implement any burn etc function that can change total.
     }
     
     function balanceOf (address account) public view override returns (uint256) {
@@ -37,6 +39,8 @@ contract B99 is IERC20 {
     }
     
     function approve(address spender, uint256 amount) public override returns (bool) {
+        // Only multiples of 9.
+        require(isIntProper(amount), "Please give me a reasonable amount.");
         allowanceMap[msg.sender][spender] = amount; // Who can transfer from your account? And how much. Same thing but for set.
         emit Approval(msg.sender, spender, amount);
         return true;
@@ -44,7 +48,8 @@ contract B99 is IERC20 {
 
     function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
         // Check if balance is enough for transfer.
-        require(balances[sender] < amount || amount > 0, "Please give me a reasonable transfer amount.");
+        // Also, B99 is only use numbers that are a multiple of 9.
+        require(isIntProper(amount) && balances[sender] > amount && amount > 0, "Please give me a reasonable transfer amount.");
         if(msg.sender != sender){
             //if it's not your account. Can you use it?
             require(allowanceMap[sender][msg.sender] >= amount, "Allowance falan filan");
@@ -60,6 +65,11 @@ contract B99 is IERC20 {
         return true;
     }
  
-    
+    function isIntProper (uint256 value) private pure returns (bool) {
+        if (value % 9 == 0) {
+            return true;
+        }
+        return false;
+    }
     
 }
