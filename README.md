@@ -25,4 +25,4 @@ Standart IRC20 Token'larının birebir bir kopyası olmasını istemediğimden, 
 Solidity nedir, temel düzeyde nasıl kullanılır. ERC20 nedir, temel düzeyde ERC20 standarlarında bir contrat nasıl yazılır.
 
 ## Neleri henüz öğrenemedim?
-Blockchain, transaction, coin, token nedir?
+Blockchain, transaction, coin, token tam olarak nedir? :)
